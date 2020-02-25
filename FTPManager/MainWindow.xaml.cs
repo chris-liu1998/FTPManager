@@ -23,6 +23,12 @@ namespace FTPManager
         public MainWindow()
         {
             InitializeComponent();
+            var login = new LoginState();
+        }
+
+        private void BtnConnect_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }
