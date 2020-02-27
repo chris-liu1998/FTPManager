@@ -69,7 +69,8 @@ namespace FTPManager
             _trend = 8;
             linestart();
             DataContext = this;
-
+            TransListView.Items.Add(new Test("1","123","2"));
+            TransListView.Items.Add(new Test("1","123","3"));
 
         }
 
@@ -107,9 +108,27 @@ namespace FTPManager
         };
         private void BtnConnect_Click(object sender, RoutedEventArgs e)
         {
-            login.IsConnecting = true;
-            BtnConnect.Content = "Connecting...";
-            Log("   Connecting...", (int)LogInfo.LogType.Info);
+            if (!login.IsConnected && !login.IsSuccessful && !login.IsConnecting)
+            {
+                login.IsConnecting = true;
+                BtnConnect.Content = "Cancel";
+                BtnConnect.Background = Brushes.Red;
+                BtnConnect.BorderBrush = Brushes.Red;
+                Log("   Connecting...", (int)LogInfo.LogType.Info);
+            }
+            else  if (login.IsConnecting)
+            {
+                login.IsConnecting = false;
+                login.IsSuccessful = false;
+                login.IsConnecting = false;
+                
+                
+            }else if (login.IsConnected)
+            {
+                login.IsConnecting = false;
+                login.IsSuccessful = false;
+            }
+            
         }
 
         private void Log(string content, int type)

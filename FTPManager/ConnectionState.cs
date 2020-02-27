@@ -14,7 +14,8 @@ namespace FTPManager
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private bool isConnecting;  // 是否正在连接
-        private bool isConnected;   //是否连接成功
+        private bool isConnected;   //是否已连接
+        private bool isSuccessful;   //是否连接成功
         public bool IsConnecting
         {
             get { return isConnecting; }
@@ -36,6 +37,18 @@ namespace FTPManager
                 if (PropertyChanged != null)
                 {
                     PropertyChanged.Invoke(this, new PropertyChangedEventArgs("IsConnected"));
+                }
+            }
+        }
+        public bool IsSuccessful
+        {
+            get { return isSuccessful; }
+            set
+            {
+                isSuccessful = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("IsSuccessful"));
                 }
             }
         }
