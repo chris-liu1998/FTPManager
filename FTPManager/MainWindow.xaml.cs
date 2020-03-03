@@ -71,6 +71,10 @@ namespace FTPManager
             DataContext = this;
             TransListView.Items.Add(new Test("1","123","2"));
             TransListView.Items.Add(new Test("1","123","3"));
+            TransListView.Items.Add(new Test("5","123","3"));
+            TransListView.Items.Add(new Test("4","123","3"));
+            TransListView.Items.Add(new Test("3","123","3"));
+            TransListView.Items.Add(new Test("2","123","3"));
 
         }
 
