@@ -33,7 +33,9 @@ namespace FTPManager
         {
             InitializeComponent();
 
-
+            var products = GetProducts();
+            if (products.Count > 0)
+                UserInfoList.ItemsSource = products;
             ////实例化一条折线图
             //LineSeries mylineseries = new LineSeries();
             ////设置折线的标题
@@ -65,7 +67,10 @@ namespace FTPManager
                    
                 }
             };
-            
+
+
+           
+
             _trend = 8;
             linestart();
             DataContext = this;
@@ -78,6 +83,85 @@ namespace FTPManager
 
         }
 
+
+        private List<File> GetProducts()
+        {
+            return new List<File>()
+                 {
+                    new File("File 1", 1, "/Images/1.jpg"),
+                    new File("File 2", 1, "/Images/1.jpg"),
+                    new File("File 3", 1, "/Images/1.jpg"),
+                    new File("File 4", 1, "/Images/1.jpg"),
+                    new File("File 5", 1, "/Images/1.jpg"),
+                    new File("File 6", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                     new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 7", 1, "/Images/1.jpg"),
+                    new File("File 8", 1, "/Images/1.jpg")
+                 };
+        }
         //连续折线图的方法
         public void linestart()
         {
@@ -143,6 +227,24 @@ namespace FTPManager
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             BtnConnect.DataContext = login;
+        }
+
+        
+        
+
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void DragWindow(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
+        private void ButtonMinus_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
         }
     }
 }

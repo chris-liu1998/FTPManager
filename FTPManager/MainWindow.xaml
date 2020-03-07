@@ -15,11 +15,38 @@
         mc:Ignorable="d"
         MinHeight="723.153"
         MinWidth="676.949"
-        Title="FTP Manager" Height="723.153" Width="676.949" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStyle="None">
+        Title="FTP Manager" Height="766.353" Width="734.549" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStyle="None">
     <Window.Resources>
-
+        <Style x:Key="UserInfoStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="border" Width="60" Height="70" Margin="5" BorderThickness="1">
+                        <StackPanel>
+                                <Border Width="50" Height="50">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{Binding Image}"/>
+                                    </Border.Background>
+                                </Border>
+                                <TextBlock TextAlignment="Center" Text="{Binding Name}" TextWrapping="Wrap" FontSize="11" FontFamily="Microsoft YaHei Light" />
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="border" Property="Background" Value="#DEEFFD"/>
+                            </Trigger>
+                            <Trigger Property="Selector.IsSelected" Value="true">
+                                <Setter TargetName="border" Property="Background" Value="#FFC6E5FF"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF9CD0FC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Border CornerRadius="8" Background="White" BorderBrush="#DEEFFD" BorderThickness="1">
+       
         <DockPanel Margin="0,0,0,0" Background="Transparent">
 
             <Grid>
@@ -30,8 +57,24 @@
                     <RowDefinition Height="1"/>
                     <RowDefinition Height="0.5*"/>
                 </Grid.RowDefinitions>
-                <Grid>
+                <Grid Grid.Row="0" MouseDown="DragWindow">
+                    <TextBlock VerticalAlignment="Center" Block.TextAlignment="Center">FTP</TextBlock>
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF37C0F3" Padding="1">
+                            <materialDesign:PackIcon Kind="Help"/>
+                        </Button>
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF37C0F3" Padding="1">
+                            <materialDesign:PackIcon Kind="Settings"/>
+                        </Button>
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" Click="ButtonMinus_Click" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF37C0F3" Padding="1">
+                            <materialDesign:PackIcon Kind="Minus"/>
+                        </Button>
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" Click="ButtonClose_Click" materialDesign:ButtonAssist.CornerRadius="0 8 0 0" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFF46464" Padding="1">
+                            <materialDesign:PackIcon Kind="Shutdown"/>
+                        </Button>
 
+                        
+                    </StackPanel>
                    
                 </Grid>
                 <Grid  Grid.Row="1">
@@ -115,11 +158,253 @@
                                     <GradientStop Color="#FF1895F9"/>
                                 </LinearGradientBrush>
                             </dragablz:TabablzControl.BorderBrush>
-                            <dragablz:TabablzControl.InterTabController>
-                                <dragablz:InterTabController />
-                            </dragablz:TabablzControl.InterTabController>
+                           
                             <TabItem Header="Files">
                                 <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <materialDesign:PackIcon
+                                              Grid.Column="0"
+                                              Kind="Folder"
+                                            Margin="2,5,0,0"
+                                            Foreground="#FFD92D"
+                                             VerticalAlignment="Center" />
+                                        <TextBox
+                                            x:Name="AddrBox"
+                                            FontSize="12"
+                                            Grid.Column="0"
+                                            materialDesign:HintAssist.Hint="Address"
+                                            VerticalAlignment="Center"
+                                            materialDesign:TextFieldAssist.HasClearButton="True"
+                                            Margin="20,5,80,0"/>
+                                        <Button
+                                            Grid.Column="0"
+                                            Width="23" Height="23"
+                                            Margin="0,6,60,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Go to" HorizontalAlignment="Right">
+                                            <materialDesign:PackIcon Kind="ArrowRightBoldCircleOutline" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#AEEA00"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="0"
+                                            Width="23" Height="23"
+                                            Margin="0,6,40,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Back" HorizontalAlignment="Right">
+                                            <materialDesign:PackIcon Kind="KeyboardBackspace" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FFEBBC08"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="0"
+                                            Width="23" Height="23"
+                                            Margin="0,6,20,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Last" HorizontalAlignment="Right">
+                                            <materialDesign:PackIcon Kind="ArrowTopThick" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FFDF0B67"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="0"
+                                            Width="23" Height="23"
+                                            Margin="0,6,0,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Home" HorizontalAlignment="Right">
+                                            <materialDesign:PackIcon Kind="Home" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FFC42CF0"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Separator Grid.Column="1" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="2,10,0,3" BorderBrush="LightGray" BorderThickness="1" HorizontalAlignment="Left"/>
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="23" Height="23"
+                                            Margin="5,6,0,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Refresh" HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="Refresh" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FF2CF0A6"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="23" Height="23"
+                                            Margin="25,6,0,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Cut" HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="Scissors" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FF2C7CF0"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="23" Height="23"
+                                            Margin="45,6,0,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Copy" HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="ContentCopy" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FF2C7CF0"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="23" Height="23"
+                                            Margin="65,6,0,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Paste" HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="ContentPaste" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FF2C7CF0"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="23" Height="23"
+                                            Margin="85,6,0,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Rename" HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="RenameBox" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FF2C7CF0"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="23" Height="23"
+                                            Margin="105,6,10,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Delete" HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="Delete" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FFFC3939"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Separator Grid.Column="1" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0,10,8,3" BorderBrush="LightGray" BorderThickness="1" HorizontalAlignment="Right"/>
+                                        <materialDesign:PackIcon
+                                              Grid.Column="2"
+                                              Kind="Magnify"
+                                            Margin="0,6,0,0"
+                                            Foreground="{Binding BorderBrush, ElementName=SearchTextBox}"
+                                              Opacity=".56" VerticalAlignment="Center" />
+                                        <TextBox x:Name="SearchTextBox"
+                                            Grid.Column="2"
+                                            Margin="20,5,40,0"
+                                            FontSize="12"
+                                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                                 materialDesign:HintAssist.Hint="Search"
+                                                VerticalAlignment="Center"/>
+                                        <Button
+                                            Grid.Column="2"
+                                            ToolTip="Search"
+                                            Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                                            Margin="0 6 20 0"
+                                            Panel.ZIndex="0" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                            <materialDesign:PackIcon
+                                                Foreground="{Binding BorderBrush, ElementName=SearchTextBox}"
+                                              Kind="Send" Height="13" Width="13" VerticalAlignment="Center" />
+                                        </Button>
+                                        <Button
+                                            Margin="0 6 0 0"
+                                            Grid.Column="3"
+                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                                materialDesign:ButtonAssist.CornerRadius="10"
+                                                ToolTip="Download" Height="20" HorizontalAlignment="Left" Background="#FF2CFC1F" BorderBrush="#FF3DF321">
+                                            <materialDesign:PackIcon Kind="CloudDownload" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                        </Button>
+                                        <Button
+                                            Margin="55 6 30 0"
+                                            Grid.Column="3"
+                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                                materialDesign:ButtonAssist.CornerRadius="10"
+                                                ToolTip="Upload" Height="20" HorizontalAlignment="Left" Background="#FFF198BB" BorderBrush="#FFF198BB">
+                                            <materialDesign:PackIcon Kind="CloudUpload" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                        </Button>
+                                        <ProgressBar
+                                            Grid.Column="3"
+                                            Margin="0,6,3,0"
+                                            Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                            Value="0"
+                                            IsIndeterminate="True" HorizontalAlignment="Right" Width="17" Height="17" />
+                                    </Grid>
+                                    <Grid Grid.Row="1">
+
+                                        <ListBox SelectionMode="Extended" BorderThickness="1" ItemContainerStyle="{StaticResource UserInfoStyle}" x:Name="UserInfoList" BorderBrush="#eaeaeb" Background="Transparent" Margin="5" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                            <ListBox.Style>
+                                                <Style TargetType="ListBox">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBox">
+                                                                <Border x:Name="Bd"  BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="0">
+                                                                    <ScrollViewer Focusable="False">
+                                                                        <ItemsPresenter />
+                                                                    </ScrollViewer>
+                                                                </Border>
+
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.Style>
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    
+                                                        <WrapPanel IsItemsHost="True" Orientation="Horizontal"/>
+                                                  
+                                                    
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                        </ListBox>
+                                    </Grid>
+
 
                                 </Grid>
                             </TabItem>
