@@ -1,7 +1,7 @@
 ﻿<Window x:Class="FTPManager.MainWindow"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Background="{DynamicResource MaterialDesignPaper}"
+        Background="{x:Null}"
         TextElement.FontWeight="Medium" 
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
@@ -13,77 +13,109 @@
         xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
         xmlns:local="clr-namespace:FTPManager"
         mc:Ignorable="d"
-        Title="FTP Manager" Height="723.153" Width="676.949" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+        MinHeight="723.153"
+        MinWidth="676.949"
+        Title="FTP Manager" Height="766.353" Width="734.549" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" WindowStyle="None">
     <Window.Resources>
-
+        <Style x:Key="UserInfoStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="border" Width="60" Height="70" Margin="5" BorderThickness="1">
+                        <StackPanel>
+                                <Border Width="50" Height="50">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{Binding Image}"/>
+                                    </Border.Background>
+                                </Border>
+                                <TextBlock TextAlignment="Center" Text="{Binding Name}" TextWrapping="Wrap" FontSize="11" FontFamily="Microsoft YaHei Light" />
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="border" Property="Background" Value="#DEEFFD"/>
+                            </Trigger>
+                            <Trigger Property="Selector.IsSelected" Value="true">
+                                <Setter TargetName="border" Property="Background" Value="#FFC6E5FF"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF9CD0FC"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
-    <DockPanel Margin="0,0,0,0">
-        <Menu
-            IsMainMenu="True"
-            DockPanel.Dock="Top">
-            <MenuItem
-                Header="_File"
-                Height="20">
-                <MenuItem x:Name="ExitItem"
-                    Header="Exit">
-                    <MenuItem.Icon>
-                        <materialDesign:PackIcon
-                            Kind="ExitToApp" />
-                    </MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
-            <MenuItem
-                Header="_Edit" Height="20" VerticalContentAlignment="Stretch">
-            </MenuItem>
-            <MenuItem
-                    Header="_Help"
-                    Height="20"/>
-        </Menu>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="0.5*"/>
-            </Grid.RowDefinitions>
-            <Grid  Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.1*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="0.4*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <materialDesign:PackIcon Kind="Ip" Grid.Column="1" Margin="0,35,0,0"  
+    <Border CornerRadius="8" Background="White" BorderBrush="#DEEFFD" BorderThickness="1">
+       
+        <DockPanel Margin="0,0,0,0" Background="Transparent">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1"/>
+                    <RowDefinition Height="0.5*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" MouseDown="DragWindow">
+                    <TextBlock VerticalAlignment="Center" Block.TextAlignment="Center">FTP</TextBlock>
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF37C0F3" Padding="1">
+                            <materialDesign:PackIcon Kind="Help"/>
+                        </Button>
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF37C0F3" Padding="1">
+                            <materialDesign:PackIcon Kind="Settings"/>
+                        </Button>
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" Click="ButtonMinus_Click" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF37C0F3" Padding="1">
+                            <materialDesign:PackIcon Kind="Minus"/>
+                        </Button>
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" Click="ButtonClose_Click" materialDesign:ButtonAssist.CornerRadius="0 8 0 0" Width="25" Height="25" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFF46464" Padding="1">
+                            <materialDesign:PackIcon Kind="Shutdown"/>
+                        </Button>
+
+                        
+                    </StackPanel>
+                   
+                </Grid>
+                <Grid  Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.1*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="0.4*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:PackIcon Kind="Ip" Grid.Column="1" Margin="0,35,0,0"  
                                          Foreground="{Binding ElementName=IpAddr, Path=BorderBrush}"/>
-                <TextBox x:Name="IpAddr"
+                    <TextBox x:Name="IpAddr"
                     materialDesign:HintAssist.Hint="IP Address"
                     Grid.Column="1"
                     Margin="20,20,5,20"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                     VerticalAlignment="Center" />
-                <materialDesign:PackIcon Kind="SerialPort" Margin="0,35,0,0" 
+                    <materialDesign:PackIcon Kind="SerialPort" Margin="0,35,0,0" 
                                          Foreground="{Binding ElementName=Port, Path=BorderBrush}"
                                          Grid.Column="2"/>
-                <TextBox x:Name="Port"
+                    <TextBox x:Name="Port"
                     materialDesign:HintAssist.Hint="Port"
                     Grid.Column="2"
                     Margin="20,20,5,20"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                     VerticalAlignment="Center" />
-                <materialDesign:PackIcon Grid.Column="3" Kind="Account"
+                    <materialDesign:PackIcon Grid.Column="3" Kind="Account"
                                           Margin="0,35,0,0"  
                                          Foreground="{Binding ElementName=NameTextBox, Path=BorderBrush}" />
-                <TextBox x:Name="NameTextBox"
+                    <TextBox x:Name="NameTextBox"
                     materialDesign:HintAssist.Hint="Username"
                     Grid.Column="3"
                     Margin="20,20,5,20"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                     VerticalAlignment="Center" />
-                <materialDesign:PackIcon Grid.Column="4" Kind="Key"
+                    <materialDesign:PackIcon Grid.Column="4" Kind="Key"
                                  Margin="0,35,0,0"    
                                  Foreground="{Binding ElementName=FloatingPasswordBox, Path=BorderBrush}" />
-                <PasswordBox
+                    <PasswordBox
                     Grid.Column="4"
                     Margin="20,20,5,20"
                     x:Name="FloatingPasswordBox"
@@ -92,7 +124,7 @@
                     materialDesign:TextFieldAssist.UnderlineBrush="Green"
                     Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" />
 
-                <Button x:Name="BtnConnect"
+                    <Button x:Name="BtnConnect"
                     Grid.Column ="5"
                     Style="{StaticResource MaterialDesignRaisedButton}"
                     materialDesign:ButtonProgressAssist.Value="-1"
@@ -101,123 +133,369 @@
                     Content="Connect"
                     Margin="10,25,5,10" Click="BtnConnect_Click" Background="#FF2196F3" />
 
-            </Grid>
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <Grid x:Name="RateGrid" Grid.Row="0">
-                    <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom"
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid x:Name="RateGrid" Grid.Row="0">
+                        <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom"
                                         Height="80" Margin="10, 20, 10, 20">
-                        <lvc:CartesianChart.AxisX>
-                            <lvc:Axis Title="Time" Labels="{Binding Labels}" FontSize="10"></lvc:Axis>
-                        </lvc:CartesianChart.AxisX>
-                        <lvc:CartesianChart.AxisY>
-                            <lvc:Axis Title="Speed Rate" LabelFormatter="{Binding yFormatter}" MinValue="0"/>
-                        </lvc:CartesianChart.AxisY>
-                    </lvc:CartesianChart>
-                </Grid>
-                <Grid Grid.Row ="1">
-                    <dragablz:TabablzControl Margin="5">
-                        <dragablz:TabablzControl.BorderBrush>
-                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                                <GradientStop Color="#FF3CAEFF" Offset="1"/>
-                                <GradientStop Color="#FF1895F9"/>
-                            </LinearGradientBrush>
-                        </dragablz:TabablzControl.BorderBrush>
-                        <dragablz:TabablzControl.InterTabController>
-                            <dragablz:InterTabController />
-                        </dragablz:TabablzControl.InterTabController>
-                        <TabItem Header="Files">
-                            <Grid>
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Title="Time" Labels="{Binding Labels}" FontSize="10"></lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Title="Speed Rate" LabelFormatter="{Binding yFormatter}" MinValue="0"/>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
+                    </Grid>
+                    <Grid Grid.Row ="1">
+                        <dragablz:TabablzControl Margin="5">
+                            <dragablz:TabablzControl.BorderBrush>
+                                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                    <GradientStop Color="#FF3CAEFF" Offset="1"/>
+                                    <GradientStop Color="#FF1895F9"/>
+                                </LinearGradientBrush>
+                            </dragablz:TabablzControl.BorderBrush>
+                           
+                            <TabItem Header="Files">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
 
-                            </Grid>
-                        </TabItem>
-                        <TabItem Header="Transmitting">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <ProgressBar Margin="0, 5, 0, 5" Height="10" Grid.Row="0" Value="73" materialDesign:TransitionAssist.DisableTransitions="False"/>
-                                <TextBlock  Margin="0, 5, 0, 5" HorizontalAlignment="Center" FontSize="10">73%</TextBlock>
-                                <ListView x:Name="TransListView" ItemsSource="{Binding Test}" Grid.Row="1" Margin="0, 5, 0, 0">
-                                    <ListView.View>
-                                        <GridView>
-                                            <GridViewColumn DisplayMemberBinding="{Binding No}" Header="No." />
-                                            <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
-                                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Date" />
-                                            <GridViewColumn Header="Progress">
-                                                <GridViewColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <Grid Width="60" VerticalAlignment="Center">
-                                                            <ProgressBar Height="7" Margin="0,5,0,0" Value="50" materialDesign:TransitionAssist.DisableTransitions="True" VerticalAlignment="Center" />
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </GridViewColumn.CellTemplate>
-                                            </GridViewColumn>
-                                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Speed" />
-                                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="LastTime" />
-                                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="RestTime" />
-                                            <GridViewColumn Header="Operations" >
-                                                <GridViewColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="*"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Button Grid.Column="0" Style="{StaticResource MaterialDesignIconButton}" ToolTip="MaterialDesignIconButton" Height="18" Width="18">
-                                                                <materialDesign:PackIcon Kind="Play" Width="13" Height="13" />
-                                                            </Button>
-                                                            <Button Grid.Column="1" Style="{StaticResource MaterialDesignIconButton}" ToolTip="MaterialDesignIconButton" Height="18" Width="18">
-                                                                <materialDesign:PackIcon Kind="Pause" Width="13" Height="13" />
-                                                            </Button>
-                                                            <Button Grid.Column="2" Style="{StaticResource MaterialDesignIconButton}" ToolTip="MaterialDesignIconButton" Height="18" Width="18">
-                                                                <materialDesign:PackIcon Kind="Stop" Width="13" Height="13" />
-                                                            </Button>
-                                                            <Button Grid.Column="3" Style="{StaticResource MaterialDesignIconButton}" ToolTip="MaterialDesignIconButton" Height="18" Width="18">
-                                                                <materialDesign:PackIcon Kind="Close" Width="13" Height="13" />
-                                                            </Button>
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </GridViewColumn.CellTemplate>
-                                            </GridViewColumn>
-                                        </GridView>
-                                    </ListView.View>
-                                </ListView>
-                            </Grid>
-                        </TabItem>
-                        <TabItem Header="Finished">
-                            <Grid>
-                                <ListView ItemsSource="{Binding Items1}">
-                                    <ListView.View>
-                                        <GridView>
-                                            <GridViewColumn DisplayMemberBinding="{Binding Code}" Header="No." />
-                                            <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
-                                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="FinishedDate" />
-                                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Storage" />
-                                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Op Record" />
-                                            <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Operations" />
-                                        </GridView>
+                                        <materialDesign:PackIcon
+                                              Grid.Column="0"
+                                              Kind="Folder"
+                                            Margin="2,5,0,0"
+                                            Foreground="#FFD92D"
+                                             VerticalAlignment="Center" />
+                                        <TextBox
+                                            x:Name="AddrBox"
+                                            FontSize="12"
+                                            Grid.Column="0"
+                                            materialDesign:HintAssist.Hint="Address"
+                                            VerticalAlignment="Center"
+                                            materialDesign:TextFieldAssist.HasClearButton="True"
+                                            Margin="20,5,80,0"/>
+                                        <Button
+                                            Grid.Column="0"
+                                            Width="23" Height="23"
+                                            Margin="0,6,60,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Go to" HorizontalAlignment="Right">
+                                            <materialDesign:PackIcon Kind="ArrowRightBoldCircleOutline" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#AEEA00"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
 
-                                    </ListView.View>
-                                </ListView>
-                            </Grid>
-                        </TabItem>
-                    </dragablz:TabablzControl>
+                                        </Button>
+                                        <Button
+                                            Grid.Column="0"
+                                            Width="23" Height="23"
+                                            Margin="0,6,40,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Back" HorizontalAlignment="Right">
+                                            <materialDesign:PackIcon Kind="KeyboardBackspace" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FFEBBC08"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="0"
+                                            Width="23" Height="23"
+                                            Margin="0,6,20,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Last" HorizontalAlignment="Right">
+                                            <materialDesign:PackIcon Kind="ArrowTopThick" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FFDF0B67"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="0"
+                                            Width="23" Height="23"
+                                            Margin="0,6,0,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Home" HorizontalAlignment="Right">
+                                            <materialDesign:PackIcon Kind="Home" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FFC42CF0"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Separator Grid.Column="1" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="2,10,0,3" BorderBrush="LightGray" BorderThickness="1" HorizontalAlignment="Left"/>
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="23" Height="23"
+                                            Margin="5,6,0,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Refresh" HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="Refresh" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FF2CF0A6"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="23" Height="23"
+                                            Margin="25,6,0,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Cut" HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="Scissors" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FF2C7CF0"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="23" Height="23"
+                                            Margin="45,6,0,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Copy" HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="ContentCopy" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FF2C7CF0"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="23" Height="23"
+                                            Margin="65,6,0,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Paste" HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="ContentPaste" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FF2C7CF0"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="23" Height="23"
+                                            Margin="85,6,0,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Rename" HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="RenameBox" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FF2C7CF0"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="23" Height="23"
+                                            Margin="105,6,10,0"
+                                            Style="{StaticResource MaterialDesignIconButton}"
+                                            ToolTip="Delete" HorizontalAlignment="Left">
+                                            <materialDesign:PackIcon Kind="Delete" Grid.Column="0"
+                                                                 VerticalAlignment="Center"
+                                                                     Foreground="#FFFC3939"
+                                                                     Height="15" Width="15"
+                                                         
+                                                                 HorizontalAlignment="Right"/>
+
+                                        </Button>
+                                        <Separator Grid.Column="1" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="0,10,8,3" BorderBrush="LightGray" BorderThickness="1" HorizontalAlignment="Right"/>
+                                        <materialDesign:PackIcon
+                                              Grid.Column="2"
+                                              Kind="Magnify"
+                                            Margin="0,6,0,0"
+                                            Foreground="{Binding BorderBrush, ElementName=SearchTextBox}"
+                                              Opacity=".56" VerticalAlignment="Center" />
+                                        <TextBox x:Name="SearchTextBox"
+                                            Grid.Column="2"
+                                            Margin="20,5,40,0"
+                                            FontSize="12"
+                                                 materialDesign:TextFieldAssist.HasClearButton="True"
+                                                 materialDesign:HintAssist.Hint="Search"
+                                                VerticalAlignment="Center"/>
+                                        <Button
+                                            Grid.Column="2"
+                                            ToolTip="Search"
+                                            Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                                            Margin="0 6 20 0"
+                                            Panel.ZIndex="0" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                            <materialDesign:PackIcon
+                                                Foreground="{Binding BorderBrush, ElementName=SearchTextBox}"
+                                              Kind="Send" Height="13" Width="13" VerticalAlignment="Center" />
+                                        </Button>
+                                        <Button
+                                            Margin="0 6 0 0"
+                                            Grid.Column="3"
+                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                                materialDesign:ButtonAssist.CornerRadius="10"
+                                                ToolTip="Download" Height="20" HorizontalAlignment="Left" Background="#FF2CFC1F" BorderBrush="#FF3DF321">
+                                            <materialDesign:PackIcon Kind="CloudDownload" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                        </Button>
+                                        <Button
+                                            Margin="55 6 30 0"
+                                            Grid.Column="3"
+                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                                materialDesign:ButtonAssist.CornerRadius="10"
+                                                ToolTip="Upload" Height="20" HorizontalAlignment="Left" Background="#FFF198BB" BorderBrush="#FFF198BB">
+                                            <materialDesign:PackIcon Kind="CloudUpload" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                        </Button>
+                                        <ProgressBar
+                                            Grid.Column="3"
+                                            Margin="0,6,3,0"
+                                            Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                            Value="0"
+                                            IsIndeterminate="True" HorizontalAlignment="Right" Width="17" Height="17" />
+                                    </Grid>
+                                    <Grid Grid.Row="1">
+
+                                        <ListBox SelectionMode="Extended" BorderThickness="1" ItemContainerStyle="{StaticResource UserInfoStyle}" x:Name="UserInfoList" BorderBrush="#eaeaeb" Background="Transparent" Margin="5" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                            <ListBox.Style>
+                                                <Style TargetType="ListBox">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBox">
+                                                                <Border x:Name="Bd"  BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="0">
+                                                                    <ScrollViewer Focusable="False">
+                                                                        <ItemsPresenter />
+                                                                    </ScrollViewer>
+                                                                </Border>
+
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.Style>
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    
+                                                        <WrapPanel IsItemsHost="True" Orientation="Horizontal"/>
+                                                  
+                                                    
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                        </ListBox>
+                                    </Grid>
+
+
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Transmitting">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressBar Margin="0, 5, 0, 5" Height="10" Grid.Row="0" Value="73" materialDesign:TransitionAssist.DisableTransitions="False"/>
+                                    <TextBlock  Margin="0, 5, 0, 5" HorizontalAlignment="Center" FontSize="10">73%</TextBlock>
+
+                                    <ListView x:Name="TransListView" ItemsSource="{Binding Test}" Grid.Row="1" Margin="0, 5, 0, 0">
+                                        <ListView.View>
+                                            <GridView AllowsColumnReorder="False">
+                                                <GridViewColumn DisplayMemberBinding="{Binding No}" Header="No."/>
+                                                <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name"/>
+                                                <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Date"/>
+                                                <GridViewColumn Header="Progress">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Grid Width="60" VerticalAlignment="Center">
+                                                                <ProgressBar Height="7" Margin="0,5,0,0" Value="50" materialDesign:TransitionAssist.DisableTransitions="True" VerticalAlignment="Center" />
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Speed"/>
+                                                <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="LastTime"/>
+                                                <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="RestTime"/>
+                                                <GridViewColumn Header="Operations">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Button Grid.Column="0" Style="{StaticResource MaterialDesignIconButton}" ToolTip="MaterialDesignIconButton" Height="18" Width="18">
+                                                                    <materialDesign:PackIcon Kind="Play" Width="13" Height="13" />
+                                                                </Button>
+                                                                <Button Grid.Column="1" Style="{StaticResource MaterialDesignIconButton}" ToolTip="MaterialDesignIconButton" Height="18" Width="18">
+                                                                    <materialDesign:PackIcon Kind="Pause" Width="13" Height="13" />
+                                                                </Button>
+                                                                <Button Grid.Column="2" Style="{StaticResource MaterialDesignIconButton}" ToolTip="MaterialDesignIconButton" Height="18" Width="18">
+                                                                    <materialDesign:PackIcon Kind="Stop" Width="13" Height="13" />
+                                                                </Button>
+                                                                <Button Grid.Column="3" Style="{StaticResource MaterialDesignIconButton}" ToolTip="MaterialDesignIconButton" Height="18" Width="18">
+                                                                    <materialDesign:PackIcon Kind="Close" Width="13" Height="13" />
+                                                                </Button>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Finished">
+                                <Grid>
+                                    <ListView ItemsSource="{Binding Items1}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn DisplayMemberBinding="{Binding Code}" Header="No." />
+                                                <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
+                                                <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="FinishedDate" />
+                                                <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Storage" />
+                                                <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Op Record" />
+                                                <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Operations" />
+                                            </GridView>
+
+                                        </ListView.View>
+                                    </ListView>
+                                </Grid>
+                            </TabItem>
+                        </dragablz:TabablzControl>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <TextBox x:Name="LogTextBox"
+                <GridSplitter Height="1" Grid.Row="3" HorizontalAlignment="Stretch"/>
+                <TextBox x:Name="LogTextBox"
                     Style="{StaticResource MaterialDesignFilledTextFieldTextBox}"
                     AcceptsReturn="True"
-                    Grid.Row="2"
-                    Margin="5"
-                    materialDesign:HintAssist.Hint="-------Log-------" IsReadOnly="True" FontSize="16" FontFamily="Consolas" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
-        </Grid>
-    </DockPanel>
-
+                    Grid.Row="4"
+                    Margin="5, 2, 5, 5"
+                    materialDesign:HintAssist.Hint="-------Log-------" IsReadOnly="True"
+                    FontSize="16" FontFamily="Consolas" HorizontalScrollBarVisibility="Disabled" 
+                    VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"/>
+            </Grid>
+        </DockPanel>
+    </Border>
 </Window>
